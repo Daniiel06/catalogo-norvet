@@ -141,17 +141,20 @@ main {
     object-fit: contain;
     display: block;
     
-    /* FUERZA LA NITIDEZ DEL TEXTO */
-    image-rendering: -webkit-optimize-contrast; /* Chrome/Safari */
-    image-rendering: crisp-edges;               /* Firefox */
-    image-rendering: pixelated;                 /* Evita el suavizado borroso */
-    
-    /* Filtro para resaltar el texto negro sobre fondo blanco */
-    filter: contrast(1.1) brightness(1.02); 
+    /* Nitidez base */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimizeContrast;
     
     transform: translateZ(0); 
     backface-visibility: hidden;
 }
+
+/* MEJORA EXTREMA: Cuando hacemos zoom, forzamos la nitidez de las letras */
+.zoomed .page-img {
+    image-rendering: pixelated; /* Evita que el navegador suavice las letras pequeñas */
+    filter: contrast(1.2) brightness(1.1); /* Resalta el negro del texto sobre el blanco */
+}
+
 
 
 #zoom-overlay {

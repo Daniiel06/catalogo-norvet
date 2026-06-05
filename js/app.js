@@ -43,7 +43,7 @@ async function initCatalog() {
             }).promise;
 
             const img = document.createElement('img');
-            img.src = canvas.toDataURL('image/jpeg', 0.95); 
+            img.src = canvas.toDataURL('image/png'); 
             img.classList.add('page-img');
 
             const pageDiv = document.createElement('div');
@@ -85,7 +85,7 @@ async function initCatalog() {
         // --- LÓGICA DE ZOOM ---
         let isDragging = false;
         let startX, startY, translateX = 0, translateY = 0;
-        const ZOOM_LEVEL = 3.0;
+        const ZOOM_LEVEL = 5.0;
 
         const zoomExitFloating = document.getElementById("zoom-exit-floating");
 
