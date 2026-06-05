@@ -14,12 +14,13 @@
 html, body {
     height: 100%;
     width: 100%;
-    overflow: hidden; 
-    position: fixed;  
+    overflow: hidden; /* Mantenemos esto para evitar el scroll general */
+    /* Eliminamos position: fixed para permitir que el contenido se ajuste */
     touch-action: none; 
     font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
     background: #f1f5f9;
 }
+
 
 body {
     display: flex;
@@ -108,8 +109,8 @@ main {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background: #cbd5e1; 
-    overflow: visible;
+    background: radial-gradient(circle, #cbd5e1 0%, #94a3b8 100%); 
+    overflow: hidden; /* Evita que el contenido se salga del main */
 }
 
 #book-container {
@@ -118,9 +119,12 @@ main {
     justify-content: center;
     align-items: center;
     width: 100%;
-    /* Aumentamos de 600px a 900px para que en PC se vea más grande */
-    max-width: 900px; 
+    max-width: 900px;
+    
+    /* --- SOLUCIÓN AL CORTE INFERIOR --- */
+    max-height: 85vh; /* El libro nunca medirá más del 85% de la altura de la pantalla */
 }
+
 
 
 #book {
@@ -128,7 +132,12 @@ main {
     box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
     transition: transform 0.3s ease; 
     will-change: transform;
+    
+    /* Esto permite que el libro se escale correctamente dentro del contenedor */
+    max-width: 100%;
+    max-height: 100%;
 }
+
 
 .zoomed {
     z-index: 100;
