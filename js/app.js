@@ -55,14 +55,18 @@ async function initCatalog() {
         pagesContainer.forEach(page => bookElement.appendChild(page));
 
         const pageFlip = new PageFlip(bookElement, {
-            width: 550, height: 800,
+            width: 600,        // Aumentamos el ancho base de la página (antes 550)
+            height: 850,       // Aumentamos un poco el alto para mantener proporción (antes 800)
             size: "stretch",
-            minWidth: 300, maxWidth: 600,
-            minHeight: 400, maxHeight: 1000,
+            minWidth: 300, 
+            maxWidth: 900,     // Debe coincidir con el max-width del CSS
+            minHeight: 400, 
+            maxHeight: 1200, 
             showCover: false,
             mobileScrollSupport: false,
             useContainerDimensions: true 
         });
+
 
         pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 

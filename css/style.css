@@ -118,8 +118,10 @@ main {
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 600px;
+    /* Aumentamos de 600px a 900px para que en PC se vea más grande */
+    max-width: 900px; 
 }
+
 
 #book {
     background: white;
