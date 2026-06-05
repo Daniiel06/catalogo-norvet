@@ -85,7 +85,7 @@ async function initCatalog() {
         // --- LÓGICA DE ZOOM ---
         let isDragging = false;
         let startX, startY, translateX = 0, translateY = 0;
-        const ZOOM_LEVEL = 5.0;
+        const ZOOM_LEVEL = 4.0;
 
         const zoomExitFloating = document.getElementById("zoom-exit-floating");
 
