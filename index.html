@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Norvet Mascotas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand">
+        <!-- Sustituimos el h1 por la imagen del logo -->
+        <img src="assets/logo.png" alt="Norvet Logo" class="logo">
+        <p>Catálogo Mascotas</p>
+        <span>Agener • California • Paraqueños • Ourofino</span>
+    </div>
+
+        <div class="actions">
+            <button id="zoomBtn">🔍 Zoom</button>
+            <button id="fullscreenBtn">⛶ Pantalla completa</button>
+            <a href="catalogo.pdf" download>Descargar PDF</a>
+        </div>
+    </header>
+
+    <div class="social-sidebar">
+        <a href="https://www.tiktok.com/@norvetsa?_r=1&_t=ZS-96x0H5Ftrt3" target="_blank" class="social-icon tiktok"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok"></a>
+        <a href="https://www.instagram.com/norvetmascotas/" target="_blank" class="social-icon instagram"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="IG"></a>
+        <a href="https://www.facebook.com/profile.php?id=100064733556399" target="_blank" class="social-icon facebook"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="FB"></a>
+    </div>
+
+    <main>
+        <div id="book-container">
+            <div id="prev-hint" class="hint prev-hint">
+                <div class="arrow">←</div>
+                <span>Atrás</span>
+            </div>
+
+            <div id="book"></div>
+            
+            <!-- ESCUDO PARA EL ZOOM: Evita que el libro pase páginas al arrastrar -->
+            <div id="zoom-overlay"></div>
+
+            <div id="next-hint" class="hint next-hint">
+                <span>Siguiente</span>
+                <div class="arrow">→</div>
+            </div>
+        </div>
+    </main>
+
+        <footer>
+        <!-- Eliminamos los botones aquí para que el cliente use las flechas laterales o el deslizamiento -->
+        <div class="progress-wrapper">
+            <div class="page-info">Página <span id="page-num">0</span> de <span id="page-count">0</span></div>
+            <div class="progress-container"><div id="progress-bar"></div></div>
+        </div>
+    </footer>
+
+    <!-- BOTÓN FLOTANTE: Ubicado al final para que sea independiente de todo -->
+    <div id="zoom-exit-floating" class="zoom-exit-btn">❌ Salir Zoom</div>
+
+    <!-- SCRIPT ÚNICO: Solo una vez al final -->
+    <script type="module" src="/js/app.js"></script>
+
+</body>
+</html>
+

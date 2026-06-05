@@ -1,0 +1,266 @@
+/* =========================================
+   1. RESET Y ESTILOS GLOBALES
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* SOLUCIÓN AL PROBLEMA DE GOOGLE/SELECCIÓN: 
+       Evita que el usuario seleccione el texto de los botones */
+    -webkit-user-select: none; 
+    user-select: none;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden; 
+    position: fixed;  
+    touch-action: none; 
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #f1f5f9;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   2. TOPBAR (Sencilla y Limpia)
+   ========================================= */
+.topbar {
+    background: white;
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-bottom: 3px solid #0b8f4d;
+    z-index: 100;
+}
+
+.brand h1 { font-size: 18px; color: #0b8f4d; line-height: 1; }
+.brand p { font-size: 12px; font-weight: 600; margin-top: 2px; color: #475569; }
+.brand span { font-size: 10px; opacity: 0.7; color: #64748b; }
+
+.actions { display: flex; gap: 8px; }
+
+#zoomBtn {
+    background: #0b8f4d !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.actions button, .actions a {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    background: #0b8f4d;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+}
+
+/* =========================================
+   3. REDES SOCIALES
+   ========================================= */
+.social-sidebar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.social-icon img { width: 25px; height: 25px; }
+.whatsapp { background: #25D366; }
+.instagram { background: #E1306C; }
+.facebook { background: #4267B2; }
+
+/* =========================================
+   4. ÁREA DEL LIBRO Y ZOOM
+   ========================================= */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #cbd5e1; 
+    overflow: visible;
+}
+
+#book-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+#book {
+    background: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+    transition: transform 0.3s ease; 
+    will-change: transform;
+}
+
+.zoomed {
+    z-index: 100;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+}
+
+#book:active { transition: none !important; }
+
+.page-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+#zoom-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1000;
+    display: none;
+    cursor: grab;
+    background: rgba(0,0,0,0);
+    touch-action: none;
+}
+
+/* =========================================
+   5. FLECHAS LATERALES (Transparentes y más abajo)
+   ========================================= */
+.hint {
+    position: absolute;
+    /* TRANSPARENCIA: Usamos rgba para que se vea lo de atrás */
+    background: rgba(11, 143, 77, 0.4) !important; 
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: 0.3s;
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.next-hint { 
+    right: -20px; 
+    bottom: 20px; /* MÁS ABAJO para no tapar el centro */
+    animation: bounceRight 2s infinite; 
+}
+
+.prev-hint { 
+    left: -20px; 
+    bottom: 20px; /* MÁS ABAJO para no tapar el centro */
+    animation: bounceLeft 2s infinite; 
+}
+
+.hint:hover {
+    background: rgba(11, 143, 77, 0.8) !important;
+}
+
+@keyframes bounceRight { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-10px); } }
+@keyframes bounceLeft { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
+
+/* =========================================
+   6. FOOTER Y BARRA DE PROGRESO
+   ========================================= */
+footer {
+    background: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.progress-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 250px;
+}
+
+.page-info { font-weight: 600; font-size: 13px; color: #475569; }
+.progress-container { width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
+#progress-bar { width: 0%; height: 100%; background: #0b8f4d; transition: width 0.3s ease; }
+
+/* =========================================
+   7. BOTÓN FLOTANTE SALIR ZOOM
+   ========================================= */
+.zoom-exit-btn {
+    position: fixed;
+    bottom: 110px;
+    right: 20px;
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    background: #0b8f4d;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 999999 !important; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border: 2px solid white;
+}
+
+/* =========================================
+   8. RESPONSIVO
+   ========================================= */
+@media (max-width: 768px) {
+    .topbar { padding: 5px 10px; }
+    .brand h1 { font-size: 16px; }
+    .brand span { display: none; }
+    .actions button, .actions a { padding: 4px 8px; font-size: 10px; }
+    main { padding: 10px; }
+    #book-container { max-width: 100%; }
+    .next-hint { right: 0; font-size: 11px; }
+    .prev-hint { left: 0; font-size: 11px; }
+    .social-sidebar { right: 10px; }
+    .progress-wrapper { width: 150px; }
+    .zoom-exit-btn { bottom: 110px; right: 10px; }
+}
+/* Eliminamos el estilo de .brand h1 y agregamos el de .logo */
+.logo {
+    height: 30px;       
+    width: auto;        
+    display: block;     
+    margin-bottom: 2px; 
+    object-fit: contain;
+}
+
