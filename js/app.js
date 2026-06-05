@@ -1,8 +1,11 @@
 import { PageFlip } from "page-flip";
 
+// Configuración de PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-const url = "catalogo.pdf"; 
+// --- CORRECCIÓN CLAVE: Ruta dinámica para GitHub Pages ---
+const url = `${import.meta.env.BASE_URL}catalogo.pdf`; 
+
 const bookElement = document.getElementById("book");
 const overlay = document.getElementById("zoom-overlay");
 const pageNumEl = document.getElementById("page-num");
@@ -22,30 +25,26 @@ async function initCatalog() {
         for (let i = 1; i <= totalPages; i++) {
             const page = await pdf.getPage(i);
             
-            // ... dentro del loop de páginas ...
-const viewport = page.getViewport({ scale: 4.0 }); // 4.0 es más estable y menos propenso al suavizado borroso
-const canvas = document.createElement('canvas');
-const context = canvas.getContext('2d', { 
-    alpha: false, 
-    desynchronized: true 
-});
+            // Alta resolución para evitar borrosidad en productos
+            const viewport = page.getViewport({ scale: 4.0 }); 
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d', { 
+                alpha: false, 
+                desynchronized: true 
+            });
 
-canvas.height = viewport.height;
-canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-// Forzamos la calidad máxima de renderizado del motor de PDF.js
-await page.render({ 
-    canvasContext: context, 
-    viewport: viewport,
-    intent: 'print' // Esto es vital para que las imágenes no se compriman
-}).promise;
+            await page.render({ 
+                canvasContext: context, 
+                viewport: viewport,
+                intent: 'print' 
+            }).promise;
 
-const img = document.createElement('img');
-// Probamos con PNG pero asegurando que el canvas no haya suavizado la imagen
-img.src = canvas.toDataURL('image/png'); 
-img.classList.add('page-img');
-// ... resto del código ...
-
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL('image/png'); 
+            img.classList.add('page-img');
 
             const pageDiv = document.createElement('div');
             pageDiv.classList.add('page');
@@ -80,40 +79,34 @@ img.classList.add('page-img');
         pageFlip.on('flip', (e) => updateUI(e.data));
         updateUI(0);
 
-     
         nextHint.addEventListener('click', () => pageFlip.flipNext());
         prevHint.addEventListener('click', () => pageFlip.flipPrev());
 
-        // --- ZOOM ULTRA-FLUIDO ---
+        // --- LÓGICA DE ZOOM ---
         let isDragging = false;
         let startX, startY, translateX = 0, translateY = 0;
-        const ZOOM_LEVEL = 3.0; // Aumentamos el zoom a 3 veces el tamaño
+        const ZOOM_LEVEL = 3.0;
 
-        // Referencia al nuevo botón flotante
-const zoomExitFloating = document.getElementById("zoom-exit-floating");
+        const zoomExitFloating = document.getElementById("zoom-exit-floating");
 
-zoomBtn.addEventListener('click', () => {
-    const isZoomed = bookElement.classList.toggle('zoomed');
-    overlay.style.display = isZoomed ? "block" : "none"; 
-    
-    // Mostrar u ocultar el botón flotante
-    zoomExitFloating.style.display = isZoomed ? "flex" : "none";
-    
-    zoomBtn.textContent = isZoomed ? "❌ Salir Zoom" : "🔍 Zoom";
-    
-    if (!isZoomed) {
-        translateX = 0; translateY = 0;
-        bookElement.style.transform = `translate(0px, 0px) scale(1)`;
-    } else {
-        bookElement.style.transform = `scale(${ZOOM_LEVEL})`;
-    }
-});
+        zoomBtn.addEventListener('click', () => {
+            const isZoomed = bookElement.classList.toggle('zoomed');
+            overlay.style.display = isZoomed ? "block" : "none"; 
+            if(zoomExitFloating) zoomExitFloating.style.display = isZoomed ? "flex" : "none";
+            
+            zoomBtn.textContent = isZoomed ? "❌ Salir Zoom" : "🔍 Zoom";
+            
+            if (!isZoomed) {
+                translateX = 0; translateY = 0;
+                bookElement.style.transform = `translate(0px, 0px) scale(1)`;
+            } else {
+                bookElement.style.transform = `scale(${ZOOM_LEVEL})`;
+            }
+        });
 
-// Hacer que el botón flotante también active la salida del zoom
-zoomExitFloating.addEventListener('click', () => {
-    zoomBtn.click(); // Simplemente hace clic en el botón principal para ejecutar la misma lógica
-});
-
+        if(zoomExitFloating) {
+            zoomExitFloating.addEventListener('click', () => zoomBtn.click());
+        }
 
         const startDrag = (e) => {
             isDragging = true;
@@ -125,13 +118,11 @@ zoomExitFloating.addEventListener('click', () => {
 
         const doDrag = (e) => {
             if (!isDragging) return;
-            // ESTA LÍNEA ES VITAL: Detiene el movimiento natural del navegador
-                if (e.cancelable) e.preventDefault();
+            if (e.cancelable) e.preventDefault();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
             translateX = clientX - startX;
             translateY = clientY - startY;
-            // Aplicamos el zoom potente
             bookElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${ZOOM_LEVEL})`;
         };
 
@@ -144,7 +135,9 @@ zoomExitFloating.addEventListener('click', () => {
         window.addEventListener('touchmove', doDrag, {passive: false});
         window.addEventListener('touchend', stopDrag);
 
-    } catch (error) { console.error("Error:", error); }
+    } catch (error) { 
+        console.error("Error cargando el catálogo:", error); 
+    }
 }
 
 document.getElementById("fullscreenBtn").addEventListener("click", () => {
@@ -153,3 +146,4 @@ document.getElementById("fullscreenBtn").addEventListener("click", () => {
 });
 
 initCatalog();
+
