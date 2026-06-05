@@ -26,7 +26,7 @@ async function initCatalog() {
             const page = await pdf.getPage(i);
             
             // Alta resolución para evitar borrosidad en productos
-            const viewport = page.getViewport({ scale: 4.0 }); 
+            const viewport = page.getViewport({ scale: 3.0 }); 
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d', { 
                 alpha: false, 
@@ -43,7 +43,7 @@ async function initCatalog() {
             }).promise;
 
             const img = document.createElement('img');
-            img.src = canvas.toDataURL('image/png'); 
+            img.src = canvas.toDataURL('image/jpeg', 0.95); 
             img.classList.add('page-img');
 
             const pageDiv = document.createElement('div');

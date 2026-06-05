@@ -140,8 +140,19 @@ main {
     height: 100%;
     object-fit: contain;
     display: block;
-    image-rendering: -webkit-optimize-contrast;
+    
+    /* FUERZA LA NITIDEZ DEL TEXTO */
+    image-rendering: -webkit-optimize-contrast; /* Chrome/Safari */
+    image-rendering: crisp-edges;               /* Firefox */
+    image-rendering: pixelated;                 /* Evita el suavizado borroso */
+    
+    /* Filtro para resaltar el texto negro sobre fondo blanco */
+    filter: contrast(1.1) brightness(1.02); 
+    
+    transform: translateZ(0); 
+    backface-visibility: hidden;
 }
+
 
 #zoom-overlay {
     position: absolute;
