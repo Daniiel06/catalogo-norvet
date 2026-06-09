@@ -3,8 +3,10 @@ import { PageFlip } from "page-flip";
 // Configuración de PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+const PDF_VERSION = "1.1"; 
+
 // --- CORRECCIÓN CLAVE: Ruta dinámica para GitHub Pages ---
-const url = `${import.meta.env.BASE_URL}catalogo.pdf`; 
+const url = `${import.meta.env.BASE_URL}catalogo.pdf?v=${PDF_VERSION}`;
 
 const bookElement = document.getElementById("book");
 const overlay = document.getElementById("zoom-overlay");
